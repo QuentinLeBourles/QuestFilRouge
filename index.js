@@ -37,8 +37,9 @@ app.get('/heroes2', (req, res) => {
     });
   });
 
-  app.get('/heroes3', (req, res) => {
-    connection.query("SELECT `Nom` FROM `ow_heroes` WHERE `Nom` LIKE 'J%'", (err, results) => {
+  app.get('/heroes3/:Nom', (req, res) => {
+    const Nom = req.params.Nom
+    connection.query("SELECT * FROM `ow_heroes` WHERE Nom = ?", Nom, (err, results) => {
       if (err) {
         res.status(500).send('Erreur ');
       } else {
@@ -46,8 +47,9 @@ app.get('/heroes2', (req, res) => {
       }
     });
   });
-  app.get('/heroes4', (req, res) => {
-    connection.query("SELECT * FROM `ow_heroes` WHERE `Date de sortie` > '2017/01/01'", (err, results) => {
+  app.get('/heroes4/:date', (req, res) => {
+    const date = req.params.date
+    connection.query("SELECT * FROM `ow_heroes` WHERE `Date de sortie` > ?",date, (err, results) => {
       if (err) {
         res.status(500).send('Erreur ');
       } else {
@@ -55,8 +57,9 @@ app.get('/heroes2', (req, res) => {
       }
     });
   });
-  app.get('/heroes5', (req, res) => {
-    connection.query("SELECT * FROM `ow_heroes` WHERE `Nom` LIKE '%a%'", (err, results) => {
+  app.get('/heroes5/:word', (req, res) => {
+    const word = `%${req.params.word}%`;
+    connection.query(`SELECT * FROM ow_heroes WHERE Nom LIKE ?`, word,  (err, results) => {
       if (err) {
         res.status(500).send('Erreur ');
       } else {
